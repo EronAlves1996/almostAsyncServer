@@ -74,7 +74,7 @@ public class UserHandlers {
                                     .body(new Object(){public String message="User don't exists";});
 
                             userRepository.save(user);
-                            return ServerResponse.ok();
+                            return ServerResponse.ok().build();
         }));
     }
 

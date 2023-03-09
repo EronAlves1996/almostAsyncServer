@@ -11,7 +11,6 @@ import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerResponse;
 
 @SpringBootApplication
-@EnableAsync
 public class AsyncServerApplication {
 
 	@Autowired
@@ -25,15 +24,14 @@ public class AsyncServerApplication {
 	public RouterFunction<ServerResponse> routerFunctions(){
 		return RouterFunctions.route()
 				.path("/users", r ->r
-						.POST(userHandlers::createUser)
-						.GET(userHandlers::getAllUsers)
 						.path("/{id}", p -> p
-								.GET(userHandlers::getUser)
-								.PUT(userHandlers::updateUser)
-								.DELETE(userHandlers::deleteUser)
-								.build()
+										.GET(userHandlers::getUser)
+										.PUT(userHandlers::updateUser)
+										.DELETE(userHandlers::deleteUser)
+								.build())
+								.POST(userHandlers::createUser)
+								.GET(userHandlers::getAllUsers)
 						)
-						.build())
 				.build();
 	}
 
