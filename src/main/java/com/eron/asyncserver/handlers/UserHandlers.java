@@ -23,14 +23,14 @@ public class UserHandlers {
         NewUserData data = request.body(NewUserData.class);
         User newUser = User.from(data);
 
-        return ServerResponse.async(
-                userRepository
-                        .save(newUser)
-                        .thenApply(userId -> ServerResponse.created(ServletUriComponentsBuilder
-                                .fromCurrentRequest()
-                                .path("/{id}")
-                                .buildAndExpand(userId)
-                                .toUri()).build())
+        return ServerResponse.async(CompletableFuture.supplyAsync(()->{
+            User userSaved = userRepository.save(newUser);
+            return ServerResponse.created(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(userSaved.id)
+                    .toUri()).build();
+        })
         );
     }
 }
