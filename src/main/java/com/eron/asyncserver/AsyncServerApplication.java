@@ -27,7 +27,12 @@ public class AsyncServerApplication {
 				.path("/users", r ->r
 						.POST(userHandlers::createUser)
 						.GET(userHandlers::getAllUsers)
-						.GET("/{id}", userHandlers::getUser)
+						.path("/{id}", p -> p
+								.GET(userHandlers::getUser)
+								.PUT(userHandlers::updateUser)
+								.DELETE(userHandlers::deleteUser)
+								.build()
+						)
 						.build())
 				.build();
 	}
