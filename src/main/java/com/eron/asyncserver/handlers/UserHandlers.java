@@ -31,7 +31,8 @@ public class UserHandlers {
             User userSaved = userRepository.save(newUser);
             return ServerResponse.created(builder
                     .buildAndExpand(userSaved.id)
-                    .toUri()).build();
+                    .toUri())
+                    .build();
         })
         );
     }
@@ -63,13 +64,28 @@ public class UserHandlers {
         int id = Integer.valueOf(request.pathVariable("id"));
         if(user.id != id) throw new RuntimeException("Id's are not equals");
 
-        return ServerResponse.async(CompletableFuture.supplyAsync(()->{
-            boolean isExists = userRepository.existsById(id);
+        return ServerResponse
+                .async(CompletableFuture
+                        .supplyAsync(()->{
+                            boolean isExists = userRepository.existsById(id);
 
-            if(!isExists) return ServerResponse.status(404).body(new Object(){public String message="User don't exists";});
+                            if(!isExists) return ServerResponse
+                                    .status(404)
+                                    .body(new Object(){public String message="User don't exists";});
 
-            userRepository.save(user);
-            return ServerResponse.ok();
+                            userRepository.save(user);
+                            return ServerResponse.ok();
         }));
+    }
+
+    public ServerResponse deleteUser(ServerRequest request) {
+        String id = request.pathVariable("id");
+        userRepository.deleteById(Integer.valueOf(id));
+
+        return ServerResponse
+                .async(CompletableFuture
+                        .supplyAsync(()-> ServerResponse
+                                .ok()
+                                .build()));
     }
 }
