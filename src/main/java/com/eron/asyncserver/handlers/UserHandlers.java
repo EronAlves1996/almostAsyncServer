@@ -33,4 +33,26 @@ public class UserHandlers {
         })
         );
     }
+
+    public ServerResponse getAllUsers(ServerRequest request) {
+        return ServerResponse
+                .async(CompletableFuture
+                        .supplyAsync(()-> ServerResponse
+                                .ok()
+                                .body(userRepository
+                                        .findAll())));
+    }
+
+    public ServerResponse getUser(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return ServerResponse
+                .async(CompletableFuture
+                        .supplyAsync(()->ServerResponse
+                                .ok()
+                                .body(userRepository
+                                        .findById(Integer
+                                                .valueOf(id))
+                                        .get()))
+                );
+    }
 }

@@ -26,6 +26,8 @@ public class AsyncServerApplication {
 		return RouterFunctions.route()
 				.path("/users", r ->r
 						.POST(userHandlers::createUser)
+						.GET(userHandlers::getAllUsers)
+						.GET("/{id}", userHandlers::getUser)
 						.build())
 				.build();
 	}
